@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車 - StyleHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4a4a4a;
+        }
+
+        nav a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #4a4a4a;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #e44d26;
+        }
+
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 1400px;
+            margin: 40px auto;
+            display: flex;
+            gap: 30px;
+        }
+
+        .cart-items {
+            flex: 2;
+        }
+
+        .cart-summary {
+            flex: 1;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 90px;
+            height: fit-content;
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .cart-item {
+            background-color: #ffffff;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 20px;
+            border-radius: 4px;
+        }
+
+        .item-details {
+            flex-grow: 1;
+        }
+
+        .item-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .item-price {
+            color: #e44d26;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            background-color: #f8f9fa;
+            border-radius: 20px;
+            overflow: hidden;
+            width: fit-content;
+        }
+
+        .quantity-control button {
+            background-color: transparent;
+            border: none;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .quantity-control button:hover {
+            background-color: #e9ecef;
+        }
+
+        .quantity-control input {
+            width: 40px;
+            text-align: center;
+            border: none;
+            background-color: transparent;
+        }
+
+        .remove-item {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .remove-item:hover {
+            background-color: #ff3333;
+        }
+
+        .cart-total {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .shipping-form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #4a4a4a;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .submit-order {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-order:hover {
+            background-color: #218838;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 1024px) {
+            main {
+                flex-direction: column;
+            }
+
+            .cart-summary {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .cart-item img {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">StyleHub</div>
+            <div>
+                <a href="./ecommerce-homepage.html">首頁</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="cart-items">
+            <h1>購物車</h1>
+            <div id="cartItems">
+                <!-- 購物車項目將通過 JavaScript 動態添加 -->
+            </div>
+        </div>
+
+        <div class="cart-summary">
+            <h2>訂單摘要</h2>
+            <p class="cart-total">總計: <span id="cartTotal">NT$0</span></p>
+
+            <div class="shipping-form">
+                <h2>收件人資料</h2>
+                <form id="shippingForm">
+                    <div class="form-group">
+                        <label for="name">姓名</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">電話</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">地址</label>
+                        <input type="text" id="address" name="address" required>
+                    </div>
+                    <button type="submit" class="submit-order">成立訂單</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 StyleHub. 版權所有。</p>
+        </div>
+    </footer>
+
+    <script>
+        // 從 localStorage 獲取購物車數據
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function updateCartDisplay() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartTotalElement = document.getElementById('cartTotal');
+            let cartTotal = 0;
+
+            cartItemsContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p>您的購物車是空的。</p>';
+            } else {
+                cart.forEach((item, index) => {
+                    cartTotal += item.price * item.quantity;
+
+                    const cartItemElement = document.createElement('div');
+                    cartItemElement.className = 'cart-item';
+                    cartItemElement.innerHTML = `
+                        <img src="${item.image.src}" alt="${item.name}">
+                        <div class="item-details">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">NT$${item.price.toLocaleString()}</div>
+                            <div class="quantity-control">
+                                <button onclick="changeQuantity(${index}, -1)">-</button>
+                                <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)">
+                                <button onclick="changeQuantity(${index}, 1)">+</button>
+                            </div>
+                        </div>
+                        <button class="remove-item" onclick="removeItem(${index})">刪除</button>
+                    `;
+                    cartItemsContainer.appendChild(cartItemElement);
+                });
+            }
+
+            cartTotalElement.textContent = `NT$${cartTotal.toLocaleString()}`;
+            updateCartCount();
+        }
+
+        function changeQuantity(index, change) {
+            cart[index].quantity = Math.max(1, cart[index].quantity + change);
+            saveCart();
+            updateCartDisplay();
+        }
+
+        function updateQuantity(index, newQuantity) {
+            cart[index].quantity = Math.max(1, parseInt(newQuantity) || 1);
+            saveCart();
+            updateCartDisplay();
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            saveCart();
+            updateCartDisplay();
+        }
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function updateCartCount() {
+            const cartCount = document.querySelector('#cartLink .cart-count');
+            if (cartCount) {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCount.textContent = totalItems;
+            }
+        }
+
+        document.getElementById('shippingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (cart.length === 0) {
+                alert('您的購物車是空的，無法提交訂單。');
+                return;
+            }
+            const formData = new FormData(this);
+            const orderData = {
+                items: cart,
+                total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+                shippingInfo: {
+                    name: formData.get('name'),
+                    phone: formData.get('phone'),
+                    address: formData.get('address')
+                }
+            };
+            console.log('訂單資料:', orderData);
+            alert('訂單已成立！感謝您的購買。');
+            // 這裡可以添加將訂單發送到伺服器的邏輯
+            cart = [];
+            saveCart();
+            updateCartDisplay();
+            this.reset();
+        });
+
+        // 初始化顯示
+        updateCartDisplay();
+    </script>
+</body>
+</html>
