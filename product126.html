@@ -244,15 +244,15 @@
             background-color: #218838;
         }
     </style>
+    <link rel="stylesheet" href="./util.css">
 </head>
 <body>
     <header>
         <div class="container">
             <nav>
-                <div class="logo">StyleHub</div>
+                <div class="logo"><a href="./ecommerce-homepage.html">StyleHub</a></div>
                 <div>
-                    <a href="#">首頁</a>
-                    <a href="#">分類</a>
+                    <a href="./ecommerce-homepage.html">首頁</a>
                     <a href="#" id="cartLink">購物車 <span id="cartCount" class="cart-count">0</span></a>
                     <div id="cartDropdown"></div>
                     <a href="#">會員中心</a>
@@ -308,13 +308,34 @@
 
         const featuresList = document.querySelector('[data-list="features"]');
         featuresList.innerHTML = productData.features.map(feature => `<li>${feature}</li>`).join('');
+        
+        dataLayer.push({
+            'event': 'view_item',
+            'ecommerce': {
+                'items': [{
+                    'item_name': productData.name,
+                    'item_id': productData.id,
+                    'price': productData.price,
+                    'quantity': 1
+                }]
+            }
+        });
 
         // 購物車功能
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         function updateCartDisplay() {
-            const cartCount = document.getElementById('cartCount');
-            cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+            const cartCount = document.getElementById("cartCount");
+            const newCount = cart.reduce((total, item) => total + item.quantity, 0);        
+            const previousCount = parseInt(localStorage.getItem('cartCount') || '0');        
+            localStorage.setItem('cartCount', newCount.toString());
+            cartCount.textContent = newCount;
+            if (newCount > previousCount) {
+                cartCount.classList.remove("animate-pop");
+                void cartCount.offsetWidth;
+                cartCount.classList.add("animate-pop");
+                setTimeout(() => cartCount.classList.remove("animate-pop"), 500);
+            }
 
             const cartDropdown = document.getElementById('cartDropdown');
             if (cart.length) {
@@ -337,8 +358,7 @@
                         <span>NT$${totalPrice.toLocaleString()}</span>
                     </div>
                     <div class="cart-actions">
-                        <button class="view-cart">查看購物車</button>
-                        <button class="checkout">結帳</button>
+                        <a href="./shopping-cart-page.html"><button class="checkout">查看購物車</button></a>
                     </div>
                 `;
             } else {
