@@ -326,19 +326,19 @@
       featuresList.innerHTML = productData.features
         .map((feature) => `<li>${feature}</li>`)
         .join("");
-      dataLayer.push({
-        event: "view_item",
-        ecommerce: {
-          items: [
-            {
-              item_name: productData.name,
-              item_id: productData.id,
-              price: productData.price,
-              quantity: 1,
-            },
-          ],
-        },
-      });
+        
+        dataLayer.push({
+            'event': 'view_item',
+            'value': productData.price,
+            'ecommerce': {
+                'items': [{
+                    'item_name': productData.name,
+                    'item_id': productData.id,
+                    'price': productData.price,
+                    'quantity': 1
+                }]
+            }
+        });
 
       // 購物車功能
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
